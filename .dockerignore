@@ -1,0 +1,7 @@
+!docker
+!src
+!build.gradle
+!settings.gradle
+!gradle.properties
+
+!build/libs

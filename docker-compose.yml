@@ -1,0 +1,38 @@
+    version: "3.7"
+    services:
+        mongo:
+            image: "mongo:4.2.1-bionic"
+            container_name: "mongo"
+            networks:
+                - net1
+            ports:
+                - 27017:27017
+            volumes:
+                 - mongo-data:/data/db
+                 - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+            environment:
+                - MONGO_INITDB_ROOT_USERNAME=admin
+                - MONGO_INITDB_ROOT_PASSWORD=admin
+                - MONGO_INITDB_DATABASE=loans
+            command: mongod --wiredTigerCacheSizeGB 1
+
+        zonky-loans:
+          depends_on:
+            - mongo
+          image: zonky
+          build:
+            context: .
+          container_name: "zonky-loans"
+          networks:
+            - net1
+          environment:
+            - SPRING_DATA_MONGODB_HOST=mongo
+            - SPRING_PROFILES_ACTIVE=prod
+          command:
+             ["./wait-for.sh", "mongo:27017", "--", "java", "-jar", "zonkychallenge.jar"]
+
+    networks:
+        net1:
+
+    volumes:
+        mongo-data:

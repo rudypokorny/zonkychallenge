@@ -1,4 +1,4 @@
-package cz.rudypokorny.zonkychallenge.configuration;
+package cz.rudypokorny.zonkychallenge.zonkyapi.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

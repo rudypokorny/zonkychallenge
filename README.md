@@ -21,4 +21,9 @@ Features
 - web interface for dispalying results and aggregations
 - cloud ready
 
+Caveats
+- no transaction support
+
+To improve
+- object conversion > employ existing frameworks 
 

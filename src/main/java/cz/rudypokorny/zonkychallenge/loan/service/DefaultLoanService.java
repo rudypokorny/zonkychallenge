@@ -19,6 +19,7 @@ public class DefaultLoanService implements LoanService {
         this.loanRepository = loanRepository;
     }
 
+    @Override
     public LoanInfo saveLoan(final LoanInfo newLoan) {
         final LoanInfo loamToBeSaved = loanRepository.findByLoanId(newLoan.getLoanId())
                 .map(saved -> updateTheLoan(saved, newLoan))
@@ -37,7 +38,6 @@ public class DefaultLoanService implements LoanService {
     public Optional<LoanInfo> findMostRecentlyPublished() {
         return loanRepository.findTopByOrderByDatePublishedDesc();
     }
-
 
     /**
      * Overwrite everything except the ID and creation date

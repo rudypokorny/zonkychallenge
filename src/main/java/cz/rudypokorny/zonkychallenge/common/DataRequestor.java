@@ -9,11 +9,11 @@ import java.util.List;
  *
  * @param <T> generic data object representation
  */
-public interface DataRetriever<T extends ExternalData> {
+public interface DataRequestor<T extends ExternalData> {
 
 
     /**
-     * Returns the {@link DataRetriever}'s name.
+     * Returns the {@link DataRequestor}'s name.
      *
      * @return name
      */
@@ -24,6 +24,6 @@ public interface DataRetriever<T extends ExternalData> {
      *
      * @return list of {@link T} representing the obtained data
      */
-    List<T> retrieveData();
+    List<T> requestData();
 
 }

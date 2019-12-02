@@ -1,8 +1,8 @@
 package cz.rudypokorny.zonkychallenge.zonkyapi.service;
 
 import cz.rudypokorny.zonkychallenge.common.ApiUrlBuilder;
-import cz.rudypokorny.zonkychallenge.common.DataRetriever;
-import cz.rudypokorny.zonkychallenge.configuration.ZonkyCustomProperties;
+import cz.rudypokorny.zonkychallenge.common.DataRequestor;
+import cz.rudypokorny.zonkychallenge.zonkyapi.configuration.ZonkyCustomProperties;
 import cz.rudypokorny.zonkychallenge.loan.service.LoanService;
 import cz.rudypokorny.zonkychallenge.zonkyapi.domain.MarketplaceLoan;
 import lombok.extern.log4j.Log4j2;
@@ -25,10 +25,10 @@ import java.util.List;
 
 @Log4j2
 @Service
-@Qualifier("zonkyLoansRestDataRetriever")
-public class ZonkyRestApiDataRetriever implements DataRetriever<MarketplaceLoan> {
+@Qualifier("zonkyLoansRestDataRequestorr")
+public class ZonkyRestApiDataRequestor implements DataRequestor<MarketplaceLoan> {
 
-    public static final String RETRIEVER_NAME = "RestApi";
+    public static final String REQUESTOR_NAME = "RestApi";
     public static final String PARAMETER_DATE_PUBLISHED__GT = "datePublished__gt";
     public static final String HEADER_X_SIZE = "X-Size";
 
@@ -38,7 +38,7 @@ public class ZonkyRestApiDataRetriever implements DataRetriever<MarketplaceLoan>
     private final Clock clock;
 
     @Autowired
-    public ZonkyRestApiDataRetriever(ZonkyCustomProperties customProperties,
+    public ZonkyRestApiDataRequestor(ZonkyCustomProperties customProperties,
                                      RestTemplate restTemplate, LoanService loanService, Clock clock) {
         this.customProperties = customProperties;
         this.restTemplate = restTemplate;
@@ -48,11 +48,11 @@ public class ZonkyRestApiDataRetriever implements DataRetriever<MarketplaceLoan>
 
     @Override
     public String getName() {
-        return RETRIEVER_NAME;
+        return REQUESTOR_NAME;
     }
 
     @Override
-    public List<MarketplaceLoan> retrieveData() {
+    public List<MarketplaceLoan> requestData() {
 
         final ZonedDateTime searchFrom = loanService.findMostRecentlyPublished()
                 .map(latestLoan -> latestLoan.getDatePublished())
@@ -63,7 +63,7 @@ public class ZonkyRestApiDataRetriever implements DataRetriever<MarketplaceLoan>
                 .addDateQueryParam(PARAMETER_DATE_PUBLISHED__GT, searchFrom)
                 .buildToURI();
 
-        log.debug(String.format("Retrieving data from: '%s'", apiUrl));
+        log.debug(String.format("Requesting data from: '%s'", apiUrl));
 
         //TODO move this to separate class
         HttpHeaders headers = new HttpHeaders();

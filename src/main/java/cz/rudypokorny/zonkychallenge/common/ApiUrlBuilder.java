@@ -1,6 +1,6 @@
 package cz.rudypokorny.zonkychallenge.common;
 
-import cz.rudypokorny.zonkychallenge.configuration.ZonkyCustomProperties;
+import cz.rudypokorny.zonkychallenge.zonkyapi.configuration.ZonkyCustomProperties;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;

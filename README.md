@@ -3,7 +3,8 @@ spring profile - dev > uses ín memory mongo db instance
 spring rpofule prod > uses externally hosted mongo db instance (in pir case in docker container)
 
 
-h2.Running using Docker
+h2.Running the app
+./gradlew build
 docker-compose up --build
 
 h2.Running locally Gradle

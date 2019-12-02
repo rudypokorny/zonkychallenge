@@ -2,8 +2,8 @@ package cz.rudypokorny.zonkychallenge.zonkyapi.service;
 
 import cz.rudypokorny.zonkychallenge.common.ApiUrlBuilder;
 import cz.rudypokorny.zonkychallenge.common.DataRequestor;
-import cz.rudypokorny.zonkychallenge.zonkyapi.configuration.ZonkyCustomProperties;
 import cz.rudypokorny.zonkychallenge.loan.service.LoanService;
+import cz.rudypokorny.zonkychallenge.zonkyapi.configuration.ZonkyCustomProperties;
 import cz.rudypokorny.zonkychallenge.zonkyapi.domain.MarketplaceLoan;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ import java.util.List;
 @Qualifier("zonkyLoansRestDataRequestorr")
 public class ZonkyRestApiDataRequestor implements DataRequestor<MarketplaceLoan> {
 
-    public static final String REQUESTOR_NAME = "RestApi";
-    public static final String PARAMETER_DATE_PUBLISHED__GT = "datePublished__gt";
-    public static final String HEADER_X_SIZE = "X-Size";
+    private static final String REQUESTOR_NAME = "RestApi";
+    private static final String PARAMETER_DATE_PUBLISHED__GT = "datePublished__gt";
+    private static final String HEADER_X_SIZE = "X-Size";
 
     private final ZonkyCustomProperties customProperties;
     private final RestTemplate restTemplate;
@@ -54,25 +54,37 @@ public class ZonkyRestApiDataRequestor implements DataRequestor<MarketplaceLoan>
     @Override
     public List<MarketplaceLoan> requestData() {
 
-        final ZonedDateTime searchFrom = loanService.findMostRecentlyPublished()
-                .map(latestLoan -> latestLoan.getDatePublished())
-                .orElse(ZonedDateTime.ofInstant(clock.instant(), ZoneOffset.UTC)
-                        .minusHours(customProperties.getBackwardInterval()));
+        final ZonedDateTime dateFrom = loanService.findMostRecentlyPublished()
+                .map(latestLoan -> {
+                    log.info(String.format("Latest published load was at: %s. Resuming from that time.", latestLoan.getDatePublished()));
+                    return latestLoan.getDatePublished();
+                })
+                .orElseGet(() -> {
+                    ZonedDateTime defaultTime = ZonedDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).minusHours(customProperties.getBackwardInterval());
+                    log.info(String.format("No loans found. Using default: %s", defaultTime));
+                    return defaultTime;
+                });
 
-        final URI apiUrl = ApiUrlBuilder.create(customProperties.getUrl(), customProperties.getUrlParams())
-                .addDateQueryParam(PARAMETER_DATE_PUBLISHED__GT, searchFrom)
-                .buildToURI();
+        final URI requestURI = constructURI(dateFrom);
 
-        log.debug(String.format("Requesting data from: '%s'", apiUrl));
+        final ResponseEntity<MarketplaceLoan[]> result = restTemplate.exchange(requestURI, HttpMethod.GET, createHeaders(), MarketplaceLoan[].class);
 
-        //TODO move this to separate class
+        //TODO solve possible NPE
+        return result == null ? Collections.emptyList() : Arrays.asList(result.getBody());
+    }
+
+    private URI constructURI(ZonedDateTime searchFrom) {
+        URI uri = ApiUrlBuilder.create(customProperties.getUrl(), customProperties.getUrlParams())
+                    .addDateQueryParam(PARAMETER_DATE_PUBLISHED__GT, searchFrom)
+                    .buildToURI();
+        log.debug(String.format("Constructing request: '%s'", uri));
+        return uri;
+    }
+
+    private HttpEntity createHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HEADER_X_SIZE, customProperties.getPageSize());
-        HttpEntity entity = new HttpEntity(headers);
-
-        final ResponseEntity<MarketplaceLoan[]> result = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, MarketplaceLoan[].class);
-
-        return result == null ? Collections.EMPTY_LIST : Arrays.asList(result.getBody());
+        return new HttpEntity(headers);
     }
 
 }

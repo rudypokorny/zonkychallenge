@@ -48,21 +48,18 @@ public class ZonkyApiSchedulerService {
 
     @Scheduled(fixedDelayString = PARAM_LOANS_FIXED_DELAY)
     public void executeScheduledAction() {
-        log.info(String.format("Executing scheduled action by '%s' and passing the result to '%s'", zonkyRestApiRequestor.getName(), mongoProcessor.getName()));
+        log.info(String.format("Executing scheduled action: '%s' -> '%s'", zonkyRestApiRequestor.getName(), mongoProcessor.getName()));
         try {
             final List<MarketplaceLoan> loans = zonkyRestApiRequestor.requestData();
+            log.debug(String.format("Request returned %s items", loans.size()));
             if (loans.size() > 0) {
-                log.debug(String.format("Processing %s items", loans.size()));
-
                 loans.forEach(mongoProcessor::process);
-            } else {
-                log.warn("Execution does not returned any data");
             }
         } catch (Exception e) {
-            log.error(String.format("Execution had failed because of %s", e.getMessage()), e);
+            log.error(String.format("Request had failed: %s", e.getMessage()), e);
         }
 
-        log.info(String.format("Next execution will be made at: %s (in %d seconds)",
+        log.info(String.format("Next request will be made at: %s (in %d seconds)",
                 clock.instant().plusMillis(customProperties.getFixedDelay()), customProperties.getFixedDelay() / 1000));
     }
 }

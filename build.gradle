@@ -16,9 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -36,7 +34,7 @@ test {
 bootJar {
     mainClassName = 'cz.rudypokorny.zonkychallenge.ZonkyChallengeApplication'
     manifest {
-        attributes('Implementation-Title':   'Demo Application',
+        attributes('Implementation-Title': 'Demo Application',
                 'Implementation-Version': project.version)
     }
 }

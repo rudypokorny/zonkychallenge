@@ -4,6 +4,8 @@ import cz.rudypokorny.zonkychallenge.loan.domain.LoanInfo;
 import cz.rudypokorny.zonkychallenge.loan.repository.LoanRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,6 +39,16 @@ public class DefaultLoanService implements LoanService {
     @Override
     public Optional<LoanInfo> findMostRecentlyPublished() {
         return loanRepository.findTopByOrderByDatePublishedDesc();
+    }
+
+    @Override
+    public Page<LoanInfo> findAll(Pageable pageable) {
+        return loanRepository.findAll(pageable);
+    }
+
+    @Override
+    public long getTotaůLoansCount() {
+        return loanRepository.count();
     }
 
     /**

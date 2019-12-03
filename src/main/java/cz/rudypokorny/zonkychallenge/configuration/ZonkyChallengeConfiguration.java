@@ -24,12 +24,18 @@ import java.util.List;
 @EnableMongoRepositories(basePackages = "cz.rudypokorny.zonkychallenge.loan.repository")
 public class ZonkyChallengeConfiguration {
 
+    /**
+     * Teach MongoDB how to convert {@link Date} and {@link ZonedDateTime}
+     */
     @Bean
     public MongoCustomConversions customConversions() {
         List<Converter> converters = Arrays.asList(new ZonedDateTimeReadConverter(), new ZonedDateTimeWriteConverter());
         return new MongoCustomConversions(converters);
     }
 
+    /**
+     * Representing time service for centralized time access
+     */
     @Bean
     public Clock clock() {
         return Clock.systemUTC();
@@ -41,7 +47,7 @@ public class ZonkyChallengeConfiguration {
     }
 
     /**
-     * Teach MongoDB how to convert {@link Date} without timezone to {@link ZonedDateTime}
+     * Converter for transforming {@link Date} without timezone to {@link ZonedDateTime}. UTC is used as default timezone
      */
     class ZonedDateTimeReadConverter implements Converter<Date, ZonedDateTime> {
         @Override
@@ -51,7 +57,7 @@ public class ZonkyChallengeConfiguration {
     }
 
     /**
-     * Teach MongoDB how to convert {@link ZonedDateTime} to {@link Date}
+     * Converter for transforming {@link ZonedDateTime} to {@link Date}
      */
     class ZonedDateTimeWriteConverter implements Converter<ZonedDateTime, Date> {
         @Override
@@ -59,4 +65,5 @@ public class ZonkyChallengeConfiguration {
             return Date.from(source.toInstant());
         }
     }
+
 }

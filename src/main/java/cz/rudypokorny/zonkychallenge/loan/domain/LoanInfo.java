@@ -1,7 +1,11 @@
 package cz.rudypokorny.zonkychallenge.loan.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import cz.rudypokorny.zonkychallenge.zonkyapi.domain.MarketplaceLoan;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -61,4 +65,13 @@ public class LoanInfo {
     private Boolean insuranceActive;
     private List<String> insuranceHistory;
 
+    /**
+     * To avoid manipulation with floats on the UI, prepare all the data on the server in advance
+     *
+     * @return revenueRate multiplied by 100 if exists, null otherwise
+     */
+    @JsonSerialize
+    public BigDecimal revenue() {
+        return revenueRate != null ? revenueRate.multiply(BigDecimal.valueOf(100)) : null;
+    }
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <script type="text/javascript" src="jquery.v3.4.1.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+    </head>
+    <body>
+    <header id="pageHeader">Zonky loans loader</header>
+        <section id="mainSection">
+            <h3>Retrieved loans (minified)</h3>
+            <table id="loanTable" class="zui-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Rating</th>
+                        <th>Amount</th>
+                        <th>Revenue rate</th>
+                        <th>Remaining investment</th>
+                        <th>Date published</th>
+                    </tr>
+                </thead>
+            </table>
+
+        </section>
+        <aside id="aside">
+            <h4>Status</h4>
+            <dl>
+                <dt>Total number of stored loans</dt>
+                <dd id="loansCount"></dd>
+                <dt>Retrieve interval (millis)</dt>
+                <dd id="refreshInterval"></dd>
+                <dt>Latest loan</dt>
+                <dd id="datePublished"></dd>
+                <dt>Default search range (hours)</dt>
+                <dd id="defaultSearchRange"></dd>
+                <dt>Additional attributes</dt>
+                <dd id="additionalAttributes"></dd>
+            </dl>
+        </aside>
+        <footer id="pageFooter">
+            Zonky challenge 2019 (c) Rudy Pokorný
+        </footer>
+    </body>
+</html>

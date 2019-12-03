@@ -33,11 +33,17 @@ public class ZonkyCustomProperties {
     /**
      * Number of hours for which the current time should be subtracted, in case of default search
      */
-    private int backwardInterval;
+    private int defaultSearchRange;
 
     /**
      * Default number to pe used for paging, value of X-Size header key
      */
-    private String pageSize = "500";
+    private String pageSize = "1000";
+
+    /*
+     Default admin credentials for the web application. Only for demo purposes.
+     */
+    private String adminUsername;
+    private String adminPassword;
 
 }

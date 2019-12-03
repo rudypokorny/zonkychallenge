@@ -1,0 +1,66 @@
+body {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "section section ads"
+    "footer footer footer";
+  grid-template-rows: 60px 1fr 60px;
+  grid-template-columns: 20% 1fr 15%;
+  grid-gap: 10px;
+  height: 100vh;
+  margin: 0;
+  }
+
+#pageHeader {
+  grid-area: header;
+}
+#pageHeader#h2{
+    display: contents;
+}
+
+#pageFooter {
+  grid-area: footer;
+}
+
+#mainSection {
+  grid-area: section;
+}
+
+#aside {
+  grid-area: ads;
+}
+
+header, footer {
+  padding: 20px;
+  background: gold;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    margin: 0;
+    padding: 0 0 0.5em 0;
+}
+
+.zui-table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}

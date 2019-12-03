@@ -60,7 +60,7 @@ public class ZonkyRestApiDataRequestor implements DataRequestor<MarketplaceLoan>
                     return latestLoan.getDatePublished();
                 })
                 .orElseGet(() -> {
-                    ZonedDateTime defaultTime = ZonedDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).minusHours(customProperties.getBackwardInterval());
+                    ZonedDateTime defaultTime = ZonedDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).minusHours(customProperties.getDefaultSearchRange());
                     log.info(String.format("No loans found. Using default: %s", defaultTime));
                     return defaultTime;
                 });

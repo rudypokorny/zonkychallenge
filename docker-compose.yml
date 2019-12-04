@@ -27,6 +27,8 @@
             - net1
           ports:
             - 8080:8080
+          volumes:
+            - ~/.gradle:/root/.gradle
           environment:
             - SPRING_DATA_MONGODB_HOST=mongo
             - SPRING_PROFILES_ACTIVE=prod

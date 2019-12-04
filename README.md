@@ -79,8 +79,8 @@ docker-compose up
 ```
 Application will start and will be serving the web interface under _http://localhost:8080_
 
-_Please note that the docker has to build the images first (hence download all the dependencies), so expect approximately TODO minutes to complete the build. 
-The fetched dependencies are stored in the shared docker volume TODO, so any subsequent build will be using that cache and therefore faster._
+_Please note that the docker has to build the images first (hence download all the dependencies) - the host's ~/.gradle folder is shared with the build image.
+If you host has .gradle folder in different location, consider changing the docker-compose.yaml to appropriate folder._
 
 To tear down the application, execute: `docker-compose down`
 
@@ -150,5 +150,4 @@ While working on the solution, I have identified a lot of possible improvements 
 - web application not API endpoints are not secured
 - web application does not implement any data conversion, formatting, etc.  
 - conversion between Zonky API and domain objects may be done using existing frameworks (possible evenusing Spring's Converter)
-- Dockerfile is not written using multi stage build, because in would dramatically increase build time (or would require additional setup to use host's gradle cache)
 - Docker-compose and Dockerfile are not using ENTRYPOINT, so passing arguments is not possible

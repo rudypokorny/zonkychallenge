@@ -28,7 +28,7 @@ public class ZonkyCustomProperties {
     /**
      * Scheduler interval in milliseconds, according which the requests are made
      */
-    private int fixedDelay;
+    private int refreshInterval;
 
     /**
      * Number of hours for which the current time should be subtracted, in case of default search

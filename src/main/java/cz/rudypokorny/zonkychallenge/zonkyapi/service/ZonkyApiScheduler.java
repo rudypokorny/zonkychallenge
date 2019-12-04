@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Log4j2
 @Service
-public class ZonkyApiSchedulerService {
+public class ZonkyApiScheduler {
 
     private static final String PARAM_LOANS_FIXED_DELAY = "${zonky.loans.fixedDelay}";
 
@@ -37,9 +37,9 @@ public class ZonkyApiSchedulerService {
      */
     @Autowired
     @SuppressWarnings("unchecked")
-    public ZonkyApiSchedulerService(@Qualifier("zonkyLoansRestDataRequestorr") DataRequestor dataRequestor,
-                                    @Qualifier("zonkyLoansMongoDataProcessor") DataProcessor dataProcessor,
-                                    Clock clock, ZonkyCustomProperties customProperties) {
+    public ZonkyApiScheduler(@Qualifier("zonkyLoansRestDataRequestorr") DataRequestor dataRequestor,
+                             @Qualifier("zonkyLoansMongoDataProcessor") DataProcessor dataProcessor,
+                             Clock clock, ZonkyCustomProperties customProperties) {
         this.zonkyRestApiRequestor = dataRequestor;
         this.mongoProcessor = dataProcessor;
         this.clock = clock;
@@ -60,6 +60,6 @@ public class ZonkyApiSchedulerService {
         }
 
         log.info(String.format("Next request will be made at: %s (in %d seconds)",
-                clock.instant().plusMillis(customProperties.getFixedDelay()), customProperties.getFixedDelay() / 1000));
+                clock.instant().plusMillis(customProperties.getRefreshInterval()), customProperties.getRefreshInterval() / 1000));
     }
 }

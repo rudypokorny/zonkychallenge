@@ -37,7 +37,7 @@ public class ZonkyChallengeStatusController extends AbstractController {
                         .map(LoanInfo::getDatePublished)
                         .orElse(null))
                 .totalLoansCount(loanService.getTotaůLoansCount())
-                .refreshInterval(customProperties.getFixedDelay())
+                .refreshInterval(customProperties.getRefreshInterval())
                 .defaultSearchRange(customProperties.getDefaultSearchRange())
                 .build();
     }

@@ -14,6 +14,7 @@ $(document).ready(function(){
                 $('<td>').text(item.remainingInvestment + " " + item.currency),
                 $('<td>').text(item.datePublished)
             );
+            row.addClass("cov_" + item.covered);
             $("#loanTable").append(row);
         })
     });

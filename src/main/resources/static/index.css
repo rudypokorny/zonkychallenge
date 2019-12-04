@@ -50,6 +50,9 @@ dd {
     border-spacing: 0;
     font: normal 13px Arial, sans-serif;
 }
+.zui-table tr.cov_true {
+    background-color: #FF5650;
+}
 .zui-table thead th {
     background-color: #DDEFEF;
     border: solid 1px #DDEEEE;

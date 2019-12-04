@@ -150,3 +150,4 @@ While working on the solution, I have identified a lot of possible improvements 
 - web application does not implement any data conversion, formatting, etc.  
 - conversion between Zonky API and domain objects may be done using existing frameworks (possible evenusing Spring's Converter)
 - Docker-compose and Dockerfile are not using ENTRYPOINT, so passing arguments is not possible
+- Not all classes have tests > usually I wrote tests whenever possible, but in this project I wrote just a few to show off how I do them, and then focused on the real issues - getting things done :-)

@@ -2,6 +2,7 @@ package cz.rudypokorny.zonkychallenge.zonkyapi.service;
 
 import cz.rudypokorny.zonkychallenge.common.DataProcessor;
 import cz.rudypokorny.zonkychallenge.common.DataRequestor;
+import cz.rudypokorny.zonkychallenge.common.Scheduler;
 import cz.rudypokorny.zonkychallenge.zonkyapi.configuration.ZonkyCustomProperties;
 import cz.rudypokorny.zonkychallenge.zonkyapi.domain.MarketplaceLoan;
 import lombok.extern.log4j.Log4j2;
@@ -13,14 +14,12 @@ import org.springframework.stereotype.Service;
 import java.time.Clock;
 import java.util.List;
 
-/**
- * Service managing the periodic operation towards the {@link DataRequestor} and passing the obtained results to the {@link DataProcessor}.
- */
 @Log4j2
 @Service
-public class ZonkyApiScheduler {
+@Qualifier("zonkyApiScheduler")
+public class ZonkyApiScheduler implements Scheduler {
 
-    private static final String PARAM_LOANS_FIXED_DELAY = "${zonky.loans.fixedDelay}";
+    private static final String PARAM_LOANS_REFRESH_INTERVAL = "${zonky.loans.refreshInterval}";
 
     private final DataRequestor<MarketplaceLoan> zonkyRestApiRequestor;
     private final DataProcessor<MarketplaceLoan> mongoProcessor;
@@ -46,7 +45,7 @@ public class ZonkyApiScheduler {
         this.customProperties = customProperties;
     }
 
-    @Scheduled(fixedDelayString = PARAM_LOANS_FIXED_DELAY)
+    @Scheduled(fixedDelayString = PARAM_LOANS_REFRESH_INTERVAL)
     public void executeScheduledAction() {
         log.info(String.format("Executing scheduled action: '%s' -> '%s'", zonkyRestApiRequestor.getName(), mongoProcessor.getName()));
         try {

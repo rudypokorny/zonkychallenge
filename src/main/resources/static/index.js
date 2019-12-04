@@ -10,7 +10,7 @@ $(document).ready(function(){
                 $('<td>').text(item.name),
                 $('<td>').text(item.rating),
                 $('<td>').text(item.amount + " " + item.currency),
-                $('<td>').text(item.revenue + "%"),
+                $('<td>').text(item.revenue != null ? item.revenue + "%": ""),
                 $('<td>').text(item.remainingInvestment + " " + item.currency),
                 $('<td>').text(item.datePublished)
             );

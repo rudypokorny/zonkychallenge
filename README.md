@@ -1,64 +1,109 @@
-h1.Zonky challenge
+# Zonky challenge
 
-h2. Description
+## Description
 
-h2. Features
+### Key features
 - highly confiugurable
-- persisted results 
+  - bac 
+- data resiliency
+  - application is using Mongo DB for data persising, 
+- intelligent fetch
+  - on each run, the DataRequestor
 - web interface for dispalying results and aggregations
 - cloud ready
 
+## High level application overview
 
-h2. Build & execution
-h3. Requirements
-The following requirements have to be met to develop:
+Scheduler
+DataRequestor
+DataProcessor
+
+                 configuration
+                       +
+                       |              +-----------------+             +------------+
+               +-------v-------+      |                 +------------>+            |
+               |               +----->+  DataRequestor  |             |  ZonkyApi  |
+               |               |      |                 +<------------+            |
+               |   Scheduler   |      +-----------------+             +------------+
+               |               |      +-----------------+
+               |               |      |                 |
+               |               +----->+  DataProcessor  |
+               +---------------+      |                 |
+                                      +--------+--------+
+                                               |
+                                      +--------+--------+
+                                      |                 |
+                                      |   LoanService   |
+                                      |                 |
+                                      +--------^--------+
+                                               |
+               +-----------------+    +--------v--------+
+        +----->+                 +--->+                 |
+web page       |    Rest API     |    |    Database     |
+        <------+                 +<---+                 |
+               +-----------------+    +-----------------+
+
+
+## Requirements
+The following requirements have to be met:
 - Java 11
-- Gradle 5
-- Mongo DB (for local development)
-- Docker (for running in container or for local development)
+- Mongo DB Community 4.2.1 (for local development) [Get Mongo](https://www.mongodb.com/download-center/community?jmp=docs)
+- Docker (for running in container or for local development) [Get Docker](https://hub.docker.com/?overlay=onboarding)
 
-h3. Build and application parameters
-To build the application, run
+## How to run it
+Just build the code using provided Gradlew wrapper and run the docker compose
+```
+./gradlew build
+docker-compose up --build
+```
 
+For detailed instructions, follow the guide below.
+
+### Build the application
+To build the application, run:
+```
 ./gradlew clean build
+```
 
-Application will start and will be serving the web interface under http://localhost:8080
+Application will start and will be serving the web interface under _http://localhost:8080_
 
-Parameters TODO..
+### Parameters
 You may also specify
 dbHost - database port. Defautled to '27017'.
-dbName - database name. Defaulted to 'zonkyLoans'
+dbName - database name. Defaulted to `loans`
 
 
-h3. Running in Docker
+### Running in production (Docker)
 To build the images and start up the containers
-
+```
 docker-compose up --build
+```
 
-Application will start and will be serving the web interface under http://localhost:8080
+Application will start and will be serving the web interface under _http://localhost:8080_
 
-To tear down the application
-docker-compose down
+To tear down the application, execute: `docker-compose down`
 
-Mongo DB is saving data on Docker shared volume. If you want to start with fresh database in Docker, be sure that remove the volume prior starting 
-
+Mongo DB is saving data on Docker shared volume. If you want to start with fresh database in Docker, be sure that remove the volume prior starting.
+```
 docker volume rm zonkychallenge_mongo-data
+```
 
-
-h3. Running in Local development environment
-To run application in development mode, run 
+### Running in Local development environment
+To run application in development mode, run: 
+```
 ./gradlew bootRun -Dspring.profiles.active=dev
+```
 
 Do not forget to change the default spring.data.mongodb.uri parameter in application-dev.properties to match your MongoDB instance connection URI, e.g.:
-
+'``
 spring.data.mongodb.uri = mongodb://localhost:27017/whatever
-
-or pass the parameters directly when executing, overriding the properties files
-e.g.:
-
+'``
+or pass the parameters directly when executing, overriding the properties files, e.g.:
+```
 ./gradlew bootRun -Dspring.profiles.active=dev -Pargs='--spring.data.mongodb.uri=mongodb://localhost:27017/whatever'
+```
 
-h2. Caveats & possible improvements
+## Caveats & possible improvements
 
 While working on the solution, I have identified a lot of possible improvements and quick-wins, but chose not to do them mainly to keep the focus on the important stuff. The list of most important/obivous improvements follows:
 

@@ -1,7 +1,7 @@
 # Zonky challenge
 
 ## Description
-The aim of this project is to build a Java application, that place a request every 5 minutes to fetch all "new" Zonky loans in publicly available API ([https://api.zonky.cz/loans/marketplace]) and displays the response. 
+The aim of this project is to build a Java application, that place a request every 5 minutes to fetch all "new" Zonky loans in publicly available API https://api.zonky.cz/loans/marketplace and displays the response. 
 
 With such a "loose functional requirements", I have made these architectural decisions:
 - application will be build using Java 11, Spring Boot 2.2 and built using Gradle 5
@@ -31,9 +31,9 @@ With such a "loose functional requirements", I have made these architectural dec
 
 ## High level application overview
 
-*Scheduler* consumes the configuration and calls the *DataRequestor* in defined intervals.
-*DataRequestor* checks, what is the LoanService's last fetched loan. If found, it use its "dateRegistered" date, otherwise is uses the current date minus the configurable interval (`defaultSearchRange`). 
-*DateProcessor* obtains the fetched data from  *DataRequestor*, converting them and saving to database.
+**Scheduler** consumes the configuration and calls the **DataRequestor** in defined intervals.
+**DataRequestor** checks, what is the LoanService's last fetched loan. If found, it use its "dateRegistered" date, otherwise is uses the current date minus the configurable interval (`defaultSearchRange`). 
+**DateProcessor** obtains the fetched data from  **DataRequestor**, converting them and saving to database.
 
 ```                 
                                          configuration
@@ -92,7 +92,7 @@ docker volume rm zonkychallenge_mongo-data
 ### Build the application
 
 ### Parameters
-Currently, customizing the application could be done only through setting application properties prior application start, preferably using ```application.properties``.
+Currently, customizing the application could be done only through setting application properties prior application start, preferably using ```application.properties```.
 
 - MongoDB connection parameters for docker
 ```
@@ -110,7 +110,6 @@ spring.data.mongodb.uri = mongodb://localhost:27017/loans
 ```
 zonky.loans.urlParams.rating__eq=AAA
 zonky.loans.urlParams.insuranceActive__eq=true
-...
 ```
 - Backward search duration (in hours): `zonky.loans.defaultSearchRange=10` 
 - Zonky's marketplace URL: `zonky.loans.url = https://api.zonky.cz/loans/marketplace`
@@ -133,9 +132,9 @@ To run the application in development mode, execute:
 ```
 
 Do not forget to change the default spring.data.mongodb.uri parameter in application-dev.properties to match your MongoDB instance connection URI, e.g.:
-'``
+```
 spring.data.mongodb.uri = mongodb://localhost:27017/whatever
-'``
+```
 or pass the parameters directly when executing, overriding the properties files, e.g.:
 ```
 ./gradlew bootRun -Dspring.profiles.active=dev -Pargs='--spring.data.mongodb.uri=mongodb://localhost:27017/whatever'

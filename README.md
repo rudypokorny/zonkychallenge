@@ -17,7 +17,7 @@
 Scheduler
 DataRequestor
 DataProcessor
-
+```
                  configuration
                        +
                        |              +-----------------+             +------------+
@@ -42,7 +42,7 @@ DataProcessor
 web page       |    Rest API     |    |    Database     |
         <------+                 +<---+                 |
                +-----------------+    +-----------------+
-
+```
 
 ## Requirements
 The following requirements have to be met:

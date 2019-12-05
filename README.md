@@ -79,6 +79,13 @@ docker-compose up
 ```
 Application will start and will be serving the web interface under _http://localhost:8080_
 
+In case of already mapped port 8080 on the host machine, simply change in docker-compose.yml port mapping section to suit your need, e.g.:
+```
+ ports:
+   - 88:8080
+```
+
+
 _Please note that the docker has to build the images first (hence download all the dependencies) - the host's ~/.gradle folder is shared with the build image.
 If you host has .gradle folder in different location, consider changing the docker-compose.yaml to appropriate folder._
 
